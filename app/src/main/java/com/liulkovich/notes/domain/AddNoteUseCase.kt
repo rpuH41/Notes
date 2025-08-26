@@ -4,7 +4,10 @@ class AddNoteUseCase(
     private val repository: NotesRepository
 ) {
 
-    operator fun invoke(note: Note) {
-        repository.addNotes(note)
+    operator fun invoke(
+        title: String,
+        content: String
+    ) {
+        repository.addNotes(title, content)
     }
 }

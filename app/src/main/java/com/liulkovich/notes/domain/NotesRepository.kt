@@ -4,7 +4,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface NotesRepository {
 
-    fun addNotes(note: Note)
+    fun addNotes(title: String, content: String)
 
     fun deletedNote(noteId: Int)
 

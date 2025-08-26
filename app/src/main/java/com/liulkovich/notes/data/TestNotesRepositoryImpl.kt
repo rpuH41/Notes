@@ -9,22 +9,20 @@ import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 
-class TestNotesRepositoryImpl : NotesRepository {
+object TestNotesRepositoryImpl : NotesRepository {
 
     private val notesListFlow = MutableStateFlow<List<Note>>(listOf())
 
-    override fun addNotes(note: Note) {
-        /*val newNotes = notesListFlow.value.toMutableList()
-        newNotes.add(note)
-        notesListFlow.value = newNotes*/
-
-        /*notesListFlow.update {
-            it.toMutableList().apply {
-                add(note)
-            }
-        }*/
-        notesListFlow.update {
-            it + note
+    override fun addNotes(title: String, content: String) {
+        notesListFlow.update {oldList ->
+           val note = Note(
+               id = oldList.size,
+               title = title,
+               content = content,
+               updateAt = System.currentTimeMillis(),
+               isPinned = false
+           )
+            oldList + note
         }
     }
 
