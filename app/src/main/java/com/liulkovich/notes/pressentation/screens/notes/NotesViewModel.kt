@@ -16,14 +16,10 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.flatMapConcat
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
 
 class NotesViewModel: ViewModel() {
 
@@ -68,7 +64,7 @@ class NotesViewModel: ViewModel() {
     //TODO: don't forget to remove it
 
     private fun addSomeNotes() {
-        repeat(50) {
+        repeat(10_000) {
             addNoteUseCase(title = "Title №$it", content = "Content №$it")
         }
     }
