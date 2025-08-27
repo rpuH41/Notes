@@ -1,10 +1,14 @@
 package com.liulkovich.notes.domain
 
+import androidx.compose.animation.core.updateTransition
+
 class EditNoteUseCase(
     private val repository: NotesRepository
 ) {
 
-    operator fun invoke(note: Note){
-       repository.editNote(note)
+    suspend operator fun invoke(note: Note){
+       repository.editNote(
+           note.copy(updateAt = System.currentTimeMillis())
+       )
     }
 }
