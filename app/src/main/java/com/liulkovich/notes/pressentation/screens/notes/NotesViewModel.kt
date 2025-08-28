@@ -69,7 +69,10 @@ class NotesViewModel: ViewModel() {
     private fun addSomeNotes() {
         repeat(10_000) {
             viewModelScope.launch {
-                addNoteUseCase(title = "Title №$it", content = "Content №$it")
+                addNoteUseCase(
+                    title = "Title №$it Title №$it Title №$it Title №$it Title №$it Title №$it Title №$it Title №$it Title №$it Title №$it Title №$it Title №$it Title №$it Title №$it Title №$it Title №$it Title №$it Title №$it Title №$it Title №$it Title №$it Title №$it ",
+                    content = "Content №$it Content №$it Content №$it Content №$it Content №$it Content №$it Content №$it Content №$it Content №$it Content №$it Content №$it Content №$it Content №$it Content №$it Content №$it "
+                )
             }
         }
     }
