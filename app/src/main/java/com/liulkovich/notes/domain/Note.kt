@@ -1,5 +1,6 @@
 package com.liulkovich.notes.domain
 
+
 data class Note(
     val id: Int,
     val title: String,
