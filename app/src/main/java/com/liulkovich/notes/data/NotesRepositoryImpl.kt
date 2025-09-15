@@ -3,10 +3,14 @@ package com.liulkovich.notes.data
 import android.content.Context
 import com.liulkovich.notes.domain.Note
 import com.liulkovich.notes.domain.NotesRepository
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import javax.inject.Inject
 
-class NotesRepositoryImpl private constructor(context: Context): NotesRepository {
+class NotesRepositoryImpl @Inject constructor(
+    @ApplicationContext private val context: Context
+): NotesRepository {
 
     private val notesDatabase = NotesDatabase.getInstance(context)
     private val notesDao = notesDatabase.notesDao()

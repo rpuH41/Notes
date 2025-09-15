@@ -1,8 +1,9 @@
 package com.liulkovich.notes.domain
 
-import androidx.compose.animation.core.updateTransition
+import javax.inject.Inject
 
-class EditNoteUseCase(
+
+class EditNoteUseCase @Inject constructor(
     private val repository: NotesRepository
 ) {
 

@@ -31,16 +31,15 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.liulkovich.notes.pressentation.utils.DateFormatter
 
 @Composable
 fun CreateNoteScreen(
     modifier: Modifier = Modifier,
-    context: Context = LocalContext.current.applicationContext,
-    viewModel: CreateNoteViewModel = viewModel {
-        CreateNoteViewModel(context)
-    },
+    //context: Context = LocalContext.current.applicationContext,
+    viewModel: CreateNoteViewModel = hiltViewModel(),
     onFinished: () -> Unit
 ) {
 
@@ -49,9 +48,6 @@ fun CreateNoteScreen(
 
     when(currentState) {
         is CreateNoteState.Creation -> {
-//            LaunchedEffect(key1 = currentState.isSaveEnabled) {
-//                Log.d("CreateNoteScreen", "Recomposition")
-//            }
             Scaffold(
                 modifier = modifier,
                 topBar = {
