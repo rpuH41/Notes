@@ -1,6 +1,7 @@
 package com.liulkovich.notes.di
 
 import android.content.Context
+import com.liulkovich.notes.data.NotesDao
 import com.liulkovich.notes.data.NotesDatabase
 import com.liulkovich.notes.data.NotesRepositoryImpl
 import com.liulkovich.notes.domain.AddNoteUseCase
@@ -15,7 +16,7 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-interface NotesModule {
+interface DataModule {
 
     @Singleton
     @Binds
@@ -26,10 +27,18 @@ interface NotesModule {
     companion object {
         @Singleton
         @Provides
-        fun provideNotesRepository(
+        fun provideDatabase(
             @ApplicationContext context: Context
         ): NotesDatabase {
             return NotesDatabase.getInstance(context)
+        }
+
+        @Singleton
+        @Provides
+        fun provideNotesDao(
+            database: NotesDatabase
+        ): NotesDao {
+            return database.notesDao()
         }
 
         @Provides

@@ -17,9 +17,6 @@ class CreateNoteViewModel @Inject constructor(
     private val addNoteUseCase: AddNoteUseCase
 ): ViewModel() {
 
-    //private val repository = NotesRepositoryImpl.getInstance(context)
-    //private val addNoteUseCase = AddNoteUseCase(repository)
-
     private val _state = MutableStateFlow<CreateNoteState>(CreateNoteState.Creation())
     val state =_state.asStateFlow()
 

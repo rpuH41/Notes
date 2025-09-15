@@ -1,9 +1,7 @@
 package com.liulkovich.notes.pressentation.screens.editing
 
-import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.liulkovich.notes.data.NotesRepositoryImpl
 import com.liulkovich.notes.domain.DeleteNoteUseCase
 import com.liulkovich.notes.domain.EditNoteUseCase
 import com.liulkovich.notes.domain.GetNoteUseCase
@@ -16,7 +14,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 @HiltViewModel(assistedFactory = EditNoteViewModel.Factory::class)
 class EditNoteViewModel @AssistedInject constructor(
@@ -28,11 +25,6 @@ class EditNoteViewModel @AssistedInject constructor(
 
 ): ViewModel() {
 
-    //private val repository = NotesRepositoryImpl.getInstance(context)
-//    private val editNoteUseCase = EditNoteUseCase(repository)
-//    private val getNoteUseCase = GetNoteUseCase(repository)
-//    private val deletedNoteUseCase = DeleteNoteUseCase(repository)
-
     private val _state = MutableStateFlow<EditNoteState>(EditNoteState.Initial)
     val state =_state.asStateFlow()
 
@@ -43,13 +35,6 @@ class EditNoteViewModel @AssistedInject constructor(
                 EditNoteState.Editing(note)
             }
         }
-    }
-
-    @AssistedFactory
-    interface Factory {
-        fun create(
-            @Assisted("noteId") noteId: Int
-        ): EditNoteViewModel
     }
 
     fun processCommand(command: EditNoteCommand) {
@@ -105,6 +90,12 @@ class EditNoteViewModel @AssistedInject constructor(
                 }
             }
         }
+    }
+    @AssistedFactory
+    interface Factory {
+        fun create(
+            @Assisted("noteId") noteId: Int
+        ): EditNoteViewModel
     }
 }
 

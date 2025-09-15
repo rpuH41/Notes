@@ -27,11 +27,6 @@ class NotesViewModel @Inject constructor(
     private val switchPinnedStatusUseCase: SwitchPinnedStatusUseCase
 ): ViewModel() {
 
-    //private val repository = NotesRepositoryImpl.getInstance(context)
-//    private val getAllNotesUseCase = GetAllNotesUseCase(repository)
-//    private val searchNotesUseCase = SearchNotesUseCase(repository)
-//    private val switchPinnedStatusUseCase = SwitchPinnedStatusUseCase(repository)
-
     private val query = MutableStateFlow("")
 
     private val _state = MutableStateFlow(NotesScreenState())

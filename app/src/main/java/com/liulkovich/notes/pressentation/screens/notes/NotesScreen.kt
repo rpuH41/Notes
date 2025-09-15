@@ -2,7 +2,6 @@
 
 package com.liulkovich.notes.pressentation.screens.notes
 
-import android.content.Context
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -35,14 +34,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.liulkovich.notes.R
 import com.liulkovich.notes.domain.Note
 import com.liulkovich.notes.pressentation.ui.theme.OtherNotesColors
@@ -52,7 +49,6 @@ import com.liulkovich.notes.pressentation.utils.DateFormatter
 @Composable
 fun NotesScreen(
     modifier: Modifier = Modifier,
-   // context: Context = LocalContext.current.applicationContext,
     viewModel: NotesViewModel = hiltViewModel(),
     onNoteClick: (Note) -> Unit,
     onAddNoteClick: () -> Unit

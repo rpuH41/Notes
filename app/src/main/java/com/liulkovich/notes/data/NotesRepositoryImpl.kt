@@ -1,19 +1,14 @@
 package com.liulkovich.notes.data
 
-import android.content.Context
 import com.liulkovich.notes.domain.Note
 import com.liulkovich.notes.domain.NotesRepository
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class NotesRepositoryImpl @Inject constructor(
-    @ApplicationContext private val context: Context
+    private val notesDao: NotesDao
 ): NotesRepository {
-
-    private val notesDatabase = NotesDatabase.getInstance(context)
-    private val notesDao = notesDatabase.notesDao()
 
     override suspend fun addNotes(
         title: String,
@@ -49,22 +44,4 @@ class NotesRepositoryImpl @Inject constructor(
         notesDao.switchPinnedStatus(noteId)
     }
 
-    companion object {
-
-        private val LOCK = Any()
-        private var instance: NotesRepositoryImpl? = null
-
-        fun getInstance(context: Context): NotesRepositoryImpl {
-
-            instance?.let { return it }
-
-            synchronized(LOCK) {
-                instance?.let { return it }
-
-                return NotesRepositoryImpl(context).also {
-                    instance = it
-                }
-            }
-        }
-    }
 }
