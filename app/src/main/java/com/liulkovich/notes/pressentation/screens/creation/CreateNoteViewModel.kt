@@ -5,11 +5,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.liulkovich.notes.data.NotesRepositoryImpl
 import com.liulkovich.notes.domain.AddNoteUseCase
+import com.liulkovich.notes.domain.ContentItem
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.serialization.json.JsonNull.content
 import javax.inject.Inject
 
 @HiltViewModel
@@ -54,8 +56,8 @@ class CreateNoteViewModel @Inject constructor(
                     _state.update { previousState ->
                         if (previousState is CreateNoteState.Creation) {
                             val title = previousState.title
-                            val content = previousState.content
-                            addNoteUseCase(title, content)
+                            val content = ContentItem.Text(content = previousState.content)
+                            addNoteUseCase(title, listOf(content))
                             CreateNoteState.Finished
                         } else {
                             previousState
