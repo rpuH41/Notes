@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.liulkovich.notes.domain.AddNoteUseCase
 import com.liulkovich.notes.domain.ContentItem
+import com.liulkovich.notes.domain.ContentItem.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -82,8 +83,8 @@ class CreateNoteViewModel @Inject constructor(
                             if (lastItem is ContentItem.Text && lastItem.content.isBlank()) {
                                 removeAt(lastIndex)
                             }
-                            add(ContentItem.Image(command.uri.toString()))
-                            add(ContentItem.Text(""))
+                            add(Image(command.uri.toString()))
+                            add(Text(""))
                         }.let {
                             previousState.copy(content = it)
                         }
@@ -108,6 +109,20 @@ class CreateNoteViewModel @Inject constructor(
 //                        }
 //                    }
             }
+
+            is CreateNoteCommand.DeleteImage -> {
+                _state.update { previousState ->
+                    if (previousState is CreateNoteState.Creation) {
+                        previousState.content.toMutableList().apply {
+                            removeAt(command.index)
+                        }.let {
+                            previousState.copy(content = it)
+                        }
+                    } else {
+                        previousState
+                    }
+                }
+            }
         }
     }
 }
@@ -119,6 +134,8 @@ sealed interface CreateNoteCommand {
     data class InputContent(val content: String, val index: Int) : CreateNoteCommand
 
     data class AddImage(val uri: Uri) : CreateNoteCommand
+
+    data class DeleteImage(val index: Int) : CreateNoteCommand
 
     data object Save : CreateNoteCommand
 
