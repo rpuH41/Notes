@@ -122,6 +122,7 @@ sealed interface EditNoteState{
     data class Editing(
         val note: Note
     ): EditNoteState {
+
         val isSaveEnabled: Boolean
             get() {
                 return when {
