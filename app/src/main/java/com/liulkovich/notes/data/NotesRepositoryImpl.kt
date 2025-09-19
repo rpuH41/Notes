@@ -8,7 +8,8 @@ import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class NotesRepositoryImpl @Inject constructor(
-    private val notesDao: NotesDao
+    private val notesDao: NotesDao,
+    private val imageFileManager: ImageFileManager
 ): NotesRepository {
 
     override suspend fun addNotes(
@@ -17,17 +18,38 @@ class NotesRepositoryImpl @Inject constructor(
         isPinned: Boolean,
         updateAt: Long,
     ) {
-        val note = Note(0, title, content, updateAt, isPinned)
+        val note = Note(0, title, content.processForStorage(), updateAt, isPinned)
         val noteDbModel = note.toDbModel()
         notesDao.addNote(noteDbModel)
     }
 
     override suspend fun deletedNote(noteId: Int) {
+        val note = notesDao.getNote(noteId).toEntity()
         notesDao.deleteNote(noteId)
+
+        note.content
+            .filterIsInstance<ContentItem.Image>()
+            .map {it.url}
+            .forEach {
+                imageFileManager.deleteImage(it)
+            }
     }
 
     override suspend fun editNote(note: Note) {
-        notesDao.addNote(note.toDbModel())
+        val oldNote = notesDao.getNote(note.id).toEntity()
+
+        val oldUrls = oldNote.content.filterIsInstance<ContentItem.Image>().map{ it.url }
+        val newUrls = note.content.filterIsInstance<ContentItem.Image>().map{ it.url }
+        val removedUrls = oldUrls - newUrls
+
+        removedUrls.forEach {
+            imageFileManager.deleteImage(it)
+        }
+
+        val proсessedContent = note.content.processForStorage()
+        val processedNote = note.copy(content = proсessedContent)
+
+        notesDao.addNote(processedNote.toDbModel())
     }
 
     override fun getAllNotes(): Flow<List<Note>> {
@@ -46,4 +68,19 @@ class NotesRepositoryImpl @Inject constructor(
         notesDao.switchPinnedStatus(noteId)
     }
 
+    private suspend fun  List<ContentItem>.processForStorage(): List<ContentItem> {
+        return map { contentItem ->
+            when(contentItem) {
+                is ContentItem.Image -> {
+                    if(imageFileManager.isInternal(contentItem.url)) {
+                        contentItem
+                    } else {
+                        val internalPath = imageFileManager.copyImageToInternalStorage(contentItem.url)
+                        ContentItem.Image(internalPath)
+                    }
+                }
+                is ContentItem.Text -> contentItem
+            }
+        }
+    }
 }
