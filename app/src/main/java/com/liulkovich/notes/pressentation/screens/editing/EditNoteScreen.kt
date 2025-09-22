@@ -28,11 +28,13 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import com.liulkovich.notes.R
 import com.liulkovich.notes.pressentation.ui.theme.Content
 import com.liulkovich.notes.pressentation.ui.theme.CustomIcons
 import com.liulkovich.notes.pressentation.utils.DateFormatter
@@ -69,7 +71,7 @@ fun EditNoteScreen(
                     TopAppBar(
                         title = {
                             Text(
-                                text = "Edit Note",
+                                text = stringResource(R.string.edit_note),
                                 fontSize = 20.sp,
                                 fontWeight = FontWeight.Bold,
                                 color = MaterialTheme.colorScheme.onSurface
@@ -83,7 +85,7 @@ fun EditNoteScreen(
                         actions = {
                             Icon(
                                 modifier = Modifier
-                                    .clickable{
+                                    .clickable {
                                         imagePicker.launch("image/*")
                                     }
                                     .padding(end = 16.dp),
@@ -119,7 +121,8 @@ fun EditNoteScreen(
                     modifier = Modifier.padding(innerPadding)
                 ) {
                     TextField(
-                        modifier = Modifier.fillMaxWidth()
+                        modifier = Modifier
+                            .fillMaxWidth()
                             .padding(horizontal = 8.dp),
                         value = currentState.note.title,
                         onValueChange = {
@@ -181,7 +184,7 @@ fun EditNoteScreen(
                         )
                     ) {
                         Text(
-                            text = "Save Note"
+                            text = stringResource(R.string.save_note)
                         )
                     }
                 }
@@ -196,7 +199,7 @@ fun EditNoteScreen(
         EditNoteState.Initial -> {}
     }
 }
-
+/*
 @Composable
 private fun TextContent(
     modifier: Modifier = Modifier,
@@ -228,3 +231,4 @@ private fun TextContent(
         }
     )
 }
+ */

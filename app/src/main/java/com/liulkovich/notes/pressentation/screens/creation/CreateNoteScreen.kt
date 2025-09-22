@@ -28,11 +28,13 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import com.liulkovich.notes.R
 import com.liulkovich.notes.pressentation.ui.theme.Content
 import com.liulkovich.notes.pressentation.ui.theme.CustomIcons
 import com.liulkovich.notes.pressentation.utils.DateFormatter
@@ -64,7 +66,7 @@ fun CreateNoteScreen(
                     TopAppBar(
                         title = {
                             Text(
-                                text = "Create Note",
+                                text = stringResource(R.string.create_note),
                                 fontSize = 20.sp,
                                 fontWeight = FontWeight.Bold,
                                 color = MaterialTheme.colorScheme.onSurface
@@ -88,7 +90,7 @@ fun CreateNoteScreen(
                         actions = {
                             Icon(
                                 modifier = Modifier
-                                    .clickable{
+                                    .clickable {
                                         imagePicker.launch("image/*")
                                     }
                                     .padding(end = 24.dp),
@@ -104,7 +106,8 @@ fun CreateNoteScreen(
                     modifier = Modifier.padding(innerPadding)
                 ) {
                     TextField(
-                        modifier = Modifier.fillMaxWidth()
+                        modifier = Modifier
+                            .fillMaxWidth()
                             .padding(horizontal = 8.dp),
                         value = currentState.title,
                         onValueChange = {
@@ -123,8 +126,7 @@ fun CreateNoteScreen(
                         ),
                         placeholder = {
                             Text(
-
-                                text = "Title",
+                                text = stringResource(R.string.title),
                                 fontSize = 24.sp,
                                 fontWeight = FontWeight.Bold,
                                 color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.2f)
@@ -175,7 +177,7 @@ fun CreateNoteScreen(
                         )
                     ) {
                         Text(
-                            text = "Save Note"
+                            text = stringResource(R.string.save_note)
                         )
                     }
                 }
