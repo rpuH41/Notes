@@ -2,23 +2,32 @@ package com.liulkovich.notes.data
 
 import com.liulkovich.notes.domain.ContentItem
 import com.liulkovich.notes.domain.Note
-import kotlinx.serialization.json.Json
 
 fun Note.toDbModel(): NoteDbModel {
-    val contentAsString: String = Json.encodeToString(content.toContentItemDbModels())
-    return NoteDbModel(id, title, contentAsString, updateAt, isPinned)
+
+    return NoteDbModel(id, title, updateAt, isPinned)
 }
 
-fun List<ContentItem>.toContentItemDbModels(): List<ContentItemDbModel> {
-    return map { contentItem ->
+fun List<ContentItem>.toContentItemDbModels(noteId: Int): List<ContentItemDbModel> {
+    return mapIndexed { index, contentItem ->
 
-        when (contentItem) {
+        when(contentItem){
             is ContentItem.Image -> {
-                ContentItemDbModel.Image(url = contentItem.url)
-            }
+                ContentItemDbModel(
+                    noteId = noteId,
+                    contentType = ContentType.IMAGE,
+                    content = contentItem.url,
+                    order = index
+                )
 
+            }
             is ContentItem.Text -> {
-                ContentItemDbModel.Text(content = contentItem.content)
+                ContentItemDbModel(
+                    noteId = noteId,
+                    contentType = ContentType.TEXT,
+                    content = contentItem.content,
+                    order = index
+                )
             }
         }
     }
@@ -26,24 +35,28 @@ fun List<ContentItem>.toContentItemDbModels(): List<ContentItemDbModel> {
 
 fun List<ContentItemDbModel>.toContentItems(): List<ContentItem> {
     return map { contentItem ->
-        when (contentItem) {
-            is ContentItemDbModel.Image -> {
-                ContentItem.Image(url = contentItem.url)
-            }
-
-            is ContentItemDbModel.Text -> {
-                ContentItem.Text(content = contentItem.content)
-            }
-        }
+       when(contentItem.contentType){
+           ContentType.TEXT -> {
+               ContentItem.Text(content = contentItem.content)
+           }
+           ContentType.IMAGE -> {
+               ContentItem.Image(url = contentItem.content)
+           }
+       }
     }
 }
 
-fun NoteDbModel.toEntity(): Note {
-    val contentItemDbModels = Json.decodeFromString<List<ContentItemDbModel>>(content)
+fun NoteWithContentDbModel.toEntity(): Note {
 
-    return Note(id, title, contentItemDbModels.toContentItems(), updateAt, isPinned)
+    return Note(
+        id = noteDbModel.id,
+        title = noteDbModel.title,
+        content = content.toContentItems(),
+        updateAt = noteDbModel.updateAt,
+        isPinned = noteDbModel.isPinned
+    )
 }
 
-fun List<NoteDbModel>.toEntities(): List<Note> {
+fun List<NoteWithContentDbModel>.toEntities(): List<Note> {
     return map {it.toEntity()}
 }
